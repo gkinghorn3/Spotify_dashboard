@@ -30,7 +30,7 @@ const generateRandomString = (length) => {
 app.get("/login", (req, res) => {
   const stateKey = "spotifyStateKey";  
   const state = generateRandomString(16);
-  const scope = "user-read-private user-read-email";
+  const scope = 'user-read-private user-read-email user-top-read';
   res.cookie(stateKey, state);
 
   const queryparams = querystring.stringify({
@@ -42,6 +42,7 @@ app.get("/login", (req, res) => {
   });
 
   res.redirect(`https://accounts.spotify.com/authorize?${queryparams}`);
+  
 });
 
 

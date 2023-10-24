@@ -1,7 +1,7 @@
 import "./header.styles.scss";
 
 const Header = ({ profile, playlists }) => {
-  console.log(playlists);
+  
   return (
     <header className="header-container" type="user">
       <div className="header__inner">

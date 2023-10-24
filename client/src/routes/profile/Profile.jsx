@@ -1,13 +1,24 @@
-import { useState, useEffect } from 'react';
-import { catchErrors } from '../../utils';
-import { getCurrentUserProfile, getCurrentUserPlaylists, getTopArtists } from '../../spotify';
+import { useState, useEffect } from "react";
+import { catchErrors } from "../../utils";
+import {
+  getCurrentUserProfile,
+  getCurrentUserPlaylists,
+  getTopArtists,
+  getTopTracks,
+} from "../../spotify";
 
-import { Header } from '../../components/';
+import {
+  Header,
+  SectionWrapper,
+  ArtistGrid,
+  TrackList,
+} from "../../components/";
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [playlists, setPlaylists] = useState(null);
   const [topArtists, setTopArtists] = useState(null);
+  const [topTracks, setTopTracks] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -17,21 +28,38 @@ const Profile = () => {
       const userPlaylists = await getCurrentUserPlaylists();
       setPlaylists(userPlaylists.data);
 
-      const topArtists = await getTopArtists();
-      setTopArtists(topArtists.data);
-      
+      const userTopArtist = await getTopArtists();
+      setTopArtists(userTopArtist.data);
+
+      const userTopTracks = await getTopTracks();
+      setTopTracks(userTopTracks.data);
     };
 
     catchErrors(fetchData());
   }, []);
-  console.log(topArtists);
+  console.log(topTracks);
   return (
     <>
-      {profile && (
-            <Header profile={profile} playlists={playlists} />
+      {profile && <Header profile={profile} playlists={playlists} />}
+      {topArtists && topTracks && (
+        <main>
+          <SectionWrapper
+            title="Top artists this month"
+            seeAllLink="/top-artists"
+          >
+            <ArtistGrid artists={topArtists.items.slice(0, 10)} />
+          </SectionWrapper>
+
+          <SectionWrapper
+            title="Top tracks of all time"
+            seeAllLink="/top-tracks"
+          >
+            <TrackList tracks={topTracks.items.slice(0, 10)} />
+          </SectionWrapper>
+        </main>
       )}
     </>
-  )
+  );
 };
 
 export default Profile;
