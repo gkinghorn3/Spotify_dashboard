@@ -47,7 +47,7 @@ function App() {
           <Login />
         ) : (
           <>
-            <button onClick={logout}>Log Out</button>
+            <button className='logout-btn' onClick={logout}>Log Out</button>
             <Router>
               <ScrollToTop />
               <Routes>
