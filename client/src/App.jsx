@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -10,7 +10,7 @@ import { GlobalStyle } from "./styles";
 import { accesstoken, logout, getCurrentUserProfile } from "./spotify";
 import { catchErrors } from "./utils";
 
-import { Login, Profile } from "./routes";
+import { Login, Profile, TopArtists, TopTracks } from "./routes";
 
 //Scroll to top of page when changing routes
 // https://reactrouter.com/web/guides/scroll-restoration/scroll-to-top
@@ -47,22 +47,17 @@ function App() {
           <Login />
         ) : (
           <>
-            <button className='logout-btn' onClick={logout}>Log Out</button>
+            <button className="logout-btn" onClick={logout}>
+              Log Out
+            </button>
             <Router>
               <ScrollToTop />
               <Routes>
-                <Route path="/top-artists" element={<h1>Top Artists</h1>} />
-                <Route path="/top-tracks" element={<h1>Top Tracks</h1>} />
+                <Route path="/top-artists" element={<TopArtists />} />
+                <Route path="/top-tracks" element={<TopTracks/>} />
                 <Route path="/playlists/:id" element={<h1>Playlist</h1>} />
                 <Route path="/playlists" element={<h1>Playlists</h1>} />
-                <Route
-                  path="/"
-                  element={
-                    <Profile />
-                  }
-         
-                  
-                />
+                <Route path="/" element={<Profile />} />
               </Routes>
             </Router>
           </>
