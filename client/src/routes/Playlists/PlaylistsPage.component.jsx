@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { getCurrentUserPlaylists } from '../../spotify';
-import { catchErrors } from '../../utils';
-import { SectionWrapper, PlaylistsGrid } from '../../components';
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { getCurrentUserPlaylists } from "../../spotify";
+import { catchErrors } from "../../utils";
+import { SectionWrapper, PlaylistsGrid, Loader } from "../../components";
 
 const PlaylistsPage = () => {
   const [playlistsData, setPlaylistsData] = useState(null);
@@ -24,7 +24,7 @@ const PlaylistsPage = () => {
       return;
     }
 
-    // Spotify Playlist endpoint only returns 20 playlists at a time, so 
+    // Spotify Playlist endpoint only returns 20 playlists at a time, so
     // another request is needed
     const fetchMoreData = async () => {
       if (playlistsData.next) {
@@ -36,22 +36,19 @@ const PlaylistsPage = () => {
     // Use functional update to update playlists state variable
     // to avoid including playlists as a dependency for this hook
     // and creating an infinite loop
-    setPlaylists(playlists => ([
-      ...playlists ? playlists : [],
-      ...playlistsData.items
-    ]));
+    setPlaylists((playlists) => [
+      ...(playlists ? playlists : []),
+      ...playlistsData.items,
+    ]);
 
     // Fetch next set of playlists as needed
     catchErrors(fetchMoreData());
-
   }, [playlistsData]);
 
   return (
     <main>
       <SectionWrapper title="Public Playlists" breadcrumb={true}>
-        {playlists && (
-          <PlaylistsGrid playlists={playlists} />
-        )}
+        {playlists ? <PlaylistsGrid playlists={playlists} /> : <Loader />}
       </SectionWrapper>
     </main>
   );

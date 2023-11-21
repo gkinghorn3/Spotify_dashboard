@@ -12,7 +12,8 @@ import {
   SectionWrapper,
   ArtistGrid,
   TrackList,
-  PlaylistsGrid
+  PlaylistsGrid, 
+  Loader
 } from "../../components/";
 
 const Profile = () => {
@@ -42,27 +43,27 @@ const Profile = () => {
   return (
     <>
       {profile && <Header profile={profile} playlists={playlists} />}
-      {topArtists && topTracks && (
-        <main>
-          <SectionWrapper
-            title="Top artists this month"
-            seeAllLink="/top-artists"
-          >
-            <ArtistGrid artists={topArtists.items.slice(0, 10)} />
-          </SectionWrapper>
+      <main>
+            {topArtists && topTracks && playlists ? (
+              <>
+                <SectionWrapper title="Top artists this month" seeAllLink="/top-artists">
+                  <ArtistGrid artists={topArtists.items.slice(0, 10)} />
+                </SectionWrapper>
 
-          <SectionWrapper
-            title="Top tracks of all time"
-            seeAllLink="/top-tracks"
-          >
-            <TrackList tracks={topTracks.items.slice(0, 10)} />
-          </SectionWrapper>
+                <SectionWrapper title="Top tracks this month" seeAllLink="/top-tracks">
+                  <TrackList tracks={topTracks.items.slice(0, 10)} />
+                </SectionWrapper>
 
-          <SectionWrapper title="Playlists" seeAllLink="/playlists">
-                <PlaylistsGrid playlists={playlists.items.slice(0, 10)} />
-              </SectionWrapper>
-        </main>
-      )}
+                <SectionWrapper title="Public Playlists" seeAllLink="/playlists">
+                  <PlaylistsGrid playlists={playlists.items.slice(0, 10)} />
+                </SectionWrapper>
+              </>
+            ) : (
+              <Loader />
+            )}
+          </main>
+        
+      
     </>
   );
 };

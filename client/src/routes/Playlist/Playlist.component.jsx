@@ -5,7 +5,7 @@ import axios from "axios";
 import { catchErrors } from "../../utils";
 import { getPlaylistById } from "../../spotify";
 
-import { SectionWrapper, TrackList } from "../../components";
+import { SectionWrapper, TrackList, Loader } from "../../components";
 
 const Playlist = () => {
   const { id } = useParams();
@@ -94,7 +94,11 @@ const Playlist = () => {
           <main>
             <SectionWrapper title={playlist.name} breadcrumb={true}>
             
-              {tracksForTracklist && <TrackList tracks={tracksForTracklist} />}
+            {tracksForTracklist ? (
+                <TrackList tracks={tracksForTracklist} />
+              ) : (
+                <Loader />
+              )}
             </SectionWrapper>
           </main>
         </>
